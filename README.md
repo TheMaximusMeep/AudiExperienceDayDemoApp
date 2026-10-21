@@ -27,14 +27,14 @@ What a car app can do that a phone app can't, in one small project. Shown live a
 
 ## Run it
 
-1. In Android Studio, open the **`demo-app`** folder (File → Open): that is the Gradle project.
-   If you opened the repository root instead, click **demo-app** in the "Android Gradle build
-   script found" notification.
-   Then open **Device Manager**, create a device, choose **Automotive**, and pick an Android
-   Automotive system image (API 33 or newer).
-2. Build and install (JDK 17, Android SDK platform 37):
+1. Open this repository in Android Studio (File → Open, the folder itself): it is the Gradle
+   project. Then open **Device Manager**, create a device, choose **Automotive**, and pick an
+   Android Automotive system image (API 33 or newer).
+2. Build and install (JDK 17, Android SDK platform 37): press **Run** in Android Studio, or
+   from a terminal with `adb` on the PATH:
    ```powershell
-   .\scripts\build-install.ps1        # or: cd demo-app; .\gradlew installDebug
+   .\scripts\build-install.ps1        # release build, installs it and starts it
+   .\gradlew installDebug             # or just the debug build
    ```
 3. Drive the car, by hand or by script. Both change the same vehicle signals (VHAL).
 

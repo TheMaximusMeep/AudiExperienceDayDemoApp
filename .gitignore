@@ -1,7 +1,20 @@
-# Gradle and IDE
+# Gradle
 .gradle/
 build/
 .kotlin/
+
+# Machine-specific: the absolute SDK path of one developer's machine.
+local.properties
+
+# IDE
 .idea/
 *.iml
-local.properties
+
+# Build outputs
+*.apk
+*.aab
+
+# Signing material, except the demo key (keystores/README.md).
+*.jks
+*.keystore
+!keystores/public-demo.jks

@@ -1,5 +1,4 @@
-# Same versions as store-client-aaos and store-demo-app, so a machine that builds the store builds
-# this without downloading anything — which matters on a conference Wi-Fi.
+# Pinned versions: once the Gradle cache is filled, the sample builds offline.
 [versions]
 agp = "9.2.1"
 kotlin = "2.4.10"

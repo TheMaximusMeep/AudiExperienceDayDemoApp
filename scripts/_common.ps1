@@ -3,7 +3,7 @@
 $ErrorActionPreference = 'Stop'
 
 $Package = 'technology.cariad.partnershowcase'
-$AppDir = Join-Path (Split-Path $PSScriptRoot -Parent) 'demo-app'
+$AppDir = Split-Path $PSScriptRoot -Parent  # the Gradle project is the repository root
 
 # Vehicle HAL property ids (VehiclePropertyIds) and gear values (VehicleGear).
 $GEAR_SELECTION = '0x11400400'
@@ -22,10 +22,14 @@ function Step([string] $text) {
 }
 
 function Use-Jdk {
-    if (-not $env:JAVA_HOME) {
-        $studioJbr = 'C:\Tools\AndroidStudio\android-studio-2024.1.1.12-windows\android-studio\jbr'
-        if (Test-Path $studioJbr) { $env:JAVA_HOME = $studioJbr }
-    }
+    if ($env:JAVA_HOME) { return }
+    # Android Studio's bundled JDK, wherever Android Studio is installed.
+    $jbr = @(
+        "$env:ProgramFiles\Android\Android Studio\jbr",
+        "$env:LOCALAPPDATA\Programs\Android Studio\jbr",
+        'C:\Tools\AndroidStudio\android-studio-2024.1.1.12-windows\android-studio\jbr'
+    ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+    if ($jbr) { $env:JAVA_HOME = $jbr }
 }
 
 # One emulator or car at a time; pass -Serial when more are connected.

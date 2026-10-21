@@ -23,7 +23,7 @@ Step "Build release APK  v$versionName (versionCode $Version)"
 Use-Jdk
 Push-Location $AppDir
 try {
-    .\gradlew.bat -q --offline ":app:assembleRelease" "-Pshowcase.versionCode=$Version" "-Pshowcase.versionName=$versionName"
+    .\gradlew.bat -q ":app:assembleRelease" "-Pshowcase.versionCode=$Version" "-Pshowcase.versionName=$versionName"
     if ($LASTEXITCODE -ne 0) { throw 'Gradle build failed' }
 } finally { Pop-Location }
 '{0}  ({1:N1} MB)' -f (Split-Path $apk -Leaf), ((Get-Item $apk).Length / 1MB)
@@ -39,9 +39,13 @@ if ($Sideload) {
     $packages = adb -s $serial shell pm list packages
     $installer = @($AudiStore, 'com.android.vending') |
         Where-Object { $packages -contains "package:$_" } | Select-Object -First 1
-    if (-not $installer) { throw 'No App Store on this device to attribute the install to; use -Sideload.' }
-    Step "Install on $serial (installer: $installer)"
-    Invoke-Adb $serial install -r -i $installer $apk
+    if ($installer) {
+        Step "Install on $serial (installer: $installer)"
+        Invoke-Adb $serial install -r -i $installer $apk
+    } else {
+        Step "Install on $serial (no App Store on this device: plain sideload)"
+        Invoke-Adb $serial install -r $apk
+    }
 }
 
 Step 'Start it'
