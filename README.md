@@ -27,6 +27,10 @@ What a car app can do that a phone app can't, in one small project. Shown live a
 
 ## Run it
 
+**Just looking?** Open `app/src/main/java/technology/cariad/partnershowcase/ui/Previews.kt`:
+Android Studio's preview shows the screen parked, driving at night, with the store's "car parked"
+event, offline, and the list of vehicle signals. No emulator needed.
+
 1. Open this repository in Android Studio (File → Open, the folder itself): it is the Gradle
    project. Then open **Device Manager**, create a device, choose **Automotive**, and pick an
    Android Automotive system image (API 33 or newer).
