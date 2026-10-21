@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Car body -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,57 L40,47 Q42,44 46,44 L62,44 Q66,44 68,47 L74,57 Q80,58 80,63 L80,67 Q80,70 77,70 L31,70 Q28,70 28,67 L28,63 Q28,58 34,57 Z" />
+    <!-- Windows -->
+    <path
+        android:fillColor="#1D0638"
+        android:pathData="M43,48 L65,48 L70,56 L38,56 Z" />
+    <!-- Wheels, in mint -->
+    <path
+        android:fillColor="#1EEF97"
+        android:pathData="M35,70 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 Z" />
+    <path
+        android:fillColor="#1EEF97"
+        android:pathData="M61,70 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 Z" />
+    <!-- Connected: one arc above the roof -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#1EEF97"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:pathData="M46,37 Q54,31 62,37" />
+</vector>

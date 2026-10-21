@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 1. An app for the car. A store that reads manifests sees what it is. -->
+    <uses-feature
+        android:name="android.hardware.type.automotive"
+        android:required="true" />
+    <!-- Car screens come in every shape: never require an orientation. -->
+    <uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.screen.landscape"
+        android:required="false" />
+
+    <!-- 2. Vehicle data. Gear and parking brake are "normal" (granted at install); speed is
+         "dangerous" and asked for at runtime, exactly like location on a phone. -->
+    <uses-permission android:name="android.car.permission.CAR_POWERTRAIN" />
+    <uses-permission android:name="android.car.permission.CAR_SPEED" />
+    <!-- More "normal" car permissions, so the signal list shows more of the car: make, model,
+         model year, fuel and charge port, outside temperature, night mode, display units. -->
+    <uses-permission android:name="android.car.permission.CAR_INFO" />
+    <uses-permission android:name="android.car.permission.CAR_EXTERIOR_ENVIRONMENT" />
+    <uses-permission android:name="android.car.permission.CAR_ENERGY_PORTS" />
+    <uses-permission android:name="android.car.permission.READ_CAR_DISPLAY_UNITS" />
+
+    <!-- Connectivity changes all the time in a car: listen to them (normal permission). -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- 3. Partner integration "car parked" (CustomBroadcastService of the App Store).
+         The store adds coordinates only for apps that hold both location permissions. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <!-- Lets us ask the store to show a notification on our behalf after parking. -->
+    <uses-permission android:name="com.example.carstore.permission.SEND_PARKING_BROADCAST" />
+
+    <!-- The in-car App Store packages this app talks to. -->
+    <queries>
+        <package android:name="com.example.carstore" />
+    </queries>
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.PartnerShowcase"
+        tools:ignore="DataExtractionRules">
+
+        <!-- The Car API lives in the car's system image, not in our APK. -->
+        <uses-library
+            android:name="android.car"
+            android:required="false" />
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="uiMode|screenSize|smallestScreenSize|screenLayout|orientation|density"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- 4. Driver distraction: this screen adapts to UX restrictions while driving, so it
+                 may stay on screen. Without this line the car replaces it with a blocking screen
+                 as soon as the car moves. The platform cannot check that the app really adapts:
+                 that is what the store's review is for, before the app reaches a single car. -->
+            <meta-data
+                android:name="distractionOptimized"
+                android:value="true" />
+        </activity>
+
+        <!-- The store's "car parked" event. A manifest receiver, so it also arrives when the app
+             is not running — that is the point of it. -->
+        <receiver
+            android:name=".parking.CarParkedReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.example.carstore.action.CAR_PARKED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Demo only: plays an assistant, a navigation prompt or a call (scripts/audio.ps1). -->
+        <receiver
+            android:name=".audio.DemoAudioSourceReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="technology.cariad.partnershowcase.DEMO_AUDIO_SOURCE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Demo only: simulates buying the licence in the store (scripts/licence.ps1). -->
+        <receiver
+            android:name=".licence.DemoLicenceReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="technology.cariad.partnershowcase.DEMO_LICENCE" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>
